@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Registration</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h1 style="text-align: center">User Registration</h1>
+    <form id="registrationForm">
+      <div class="form-group">
+        <label for="fname"><strong>First Name</strong></label>
+        <input type="text" class="form-control" id="fname" />
+      </div>
+
+      <div id="errorMessagefirst" class="error"></div>
+
+      <div class="form-group">
+        <label for="lname">
+          <strong>Last Name</strong>
+        </label>
+        <input type="text" class="form-control" id="lname" />
+      </div>
+      <div id="errorMessagelast" class="error"></div>
+      <div class="form-group">
+        <label for="course"><strong>
+            Course
+          </strong>
+        </label>
+        <select class="form-control" id="course">
+          <option value="">Select a Course</option>
+          <option value="Physics">Physics</option>
+          <option value="Chemistry">Chemistry</option>
+          <option value="Maths">Maths</option>
+          <option value="English">English</option>
+        </select>
+        <div id="errorMessagecourse" class="error"></div>
+      </div>
+      <div class="form-group">
+        <label for="gender">
+          <strong>
+            Gender
+          </strong>
+        </label>
+        <select class="form-control" id="gender">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <div id="errorMessagegender" class="error"></div>
+      </div>
+      <div class="form-group">
+        <label for="phone">
+          <strong>
+            Phone
+          </strong>
+        </label>
+        <input type="tel" class="form-control" id="phone" pattern="[0-9]{10}" />
+        <div id="errorMessagephone" class="error"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">
+          <strong>
+            Email
+          </strong>
+        </label>
+        <input type="email" class="form-control" id="email" />
+        <div id="errorMessageemail" class="error"></div>
+      </div>
+      <div class="form-group">
+        <label for="password">
+          <strong>
+            Password
+          </strong>
+        </label>
+        <input type="password" class="form-control" id="password" />
+        <div id="errorMessagepassword" class="error"></div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">
+          <strong>
+            Re-enter Password
+          </strong>
+        </label>
+        <input type="password" class="form-control" id="confirmPassword" />
+        <div id="errorMessagerepassword" class="error"></div>
+        <div id="passwordnotmatched" class="error"></div>
+      </div>
+
+
+      <div id="message" class="text-danger"></div><br>
+      <div style="display: flex">
+        <button type="submit" class="btn btn-primary" id="registerButton" style="margin-right: 5px; width: 100px;">
+          Register
+        </button>
+        <button type="button" class="btn btn-success" id="saveChangesButton"
+          style="display: none; margin-right: 5px; width: 100px;">
+          Save
+        </button>
+        <button type="button" class="btn btn-secondary" id="resetButton" style="margin-right: 5px; width: 100px;">
+          Reset
+        </button>
+        <button type="button" class="btn btn-secondary" id="clearButton"
+          style="display:none; margin-right: 5px; width: 100px;">
+          Clear
+        </button>
+      </div>
+  </div>
+  </form>
+
+  <hr />
+
+  <h2 style="text-align: center">Registered Users</h2>
+  <table class="table table-bordered table-striped" style="border: 2px solid #343a40;">
+    <thead>
+      <tr>
+        <th>Id No</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Course</th>
+        <th>Gender</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="userTableBody">
+      <!-- User data will be inserted here dynamically -->
+    </tbody>
+  </table>
+
+  </div>
+
+  <!--Edit User Modal - Not using it anymore
+  <div class=" modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Confirm Edit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">Are you sure you want to edit this user?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" id="confirmEditUser">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>-->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+  <!-- Delete User Modal -->
+  <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Confirm Deletion
+          </h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this user?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteUser" data-bs-dismiss="modal">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let users = [];
+    let idNumber = 1;
+
+    const addUserToTable = (user) => {
+      const tableBody = document.getElementById("userTableBody");
+      const row = `
+          <tr id="user-${user.id}">
+            <td>${idNumber++}</td>
+            <td>${user.fname}</td>
+            <td>${user.lname}</td>
+            <td>${user.course}</td>
+            <td>${user.gender}</td>
+            <td>${user.phone}</td>
+            <td>${user.email}</td>
+            <td>
+              <button class="btn btn-sm btn-primary editUser" data-userid="${user.id}">Edit</button>
+              <button class="btn btn-sm btn-danger deleteUser" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-userid="${user.id}">Delete</button>
+            </td>
+          </tr>
+        `;
+      tableBody.innerHTML += row;
+    };
+
+    document.getElementById("resetButton").addEventListener("click", () => {
+      document.getElementById("registrationForm").reset();
+      document.getElementById("message").innerHTML = "";
+      if (document.getElementById("registerButton").style.display !== "none") {
+        document.getElementById("registerButton").style.display = "none";
+      }
+      document.getElementById("saveChangesButton").style.display = "none";
+      document.getElementById("resetButton").style.display = "none";
+      document.getElementById("clearButton").style.display = "block";
+    });
+
+    // added clear Button functionality
+    document.getElementById("clearButton").addEventListener("click", () => {
+      document.getElementById("registrationForm").reset();
+      document.getElementById("message").innerHTML = "";
+      document.getElementById("registerButton").style.display = "block";
+      document.getElementById("saveChangesButton").style.display = "none";
+      document.getElementById("resetButton").style.display = "block";
+      document.getElementById("clearButton").style.display = "none";
+    });
+
+    document
+      .getElementById("registrationForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (validateForm()) {
+          const newUser = {
+            id: users.length + 1,
+            fname: document.getElementById("fname").value,
+            lname: document.getElementById("lname").value,
+            course: document.getElementById("course").value,
+            gender: document.getElementById("gender").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+          };
+          users.push(newUser);
+          addUserToTable(newUser);
+          document.getElementById("registrationForm").reset();
+          document.getElementById("message").innerHTML = "";
+          document.getElementById("errorMessage1").innerHTML = "";
+          document.getElementById("errorMessage2").innerHTML = "";
+        }
+      });
+
+    const validateForm = () => {
+      let isValid = true;
+      let errorMessagefirst = "";
+      let errorMessagelast = "";
+      let errorMessagecourse = "";
+      let errorMessagegender = "";
+      let errorMessagephone = "";
+      let errorMessageemail = "";
+      let errorMessagepassword = "";
+      let errorMessagerepassword = "";
+      let passwordnotmatched = "";
+
+      const fname = document.getElementById("fname").value;
+      const lname = document.getElementById("lname").value;
+      const course = document.getElementById("course").value;
+      const gender = document.getElementById("gender").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        passwordnotmatched = "Passwords do not match!";
+        isValid = false;
+      };
+      if (fname.trim() === "") {
+        errorMessagefirst += "First Name is required.<br>";
+        isValid = false;
+      }
+      if (lname.trim() === "") {
+        errorMessagelast += "Last Name is required.<br>";
+        isValid = false;
+      }
+      if (course.trim() === "") {
+        errorMessagecourse += "Course is required.<br>";
+        isValid = false;
+      }
+      if (gender.trim() === "") {
+        errorMessagegender += "Gender is required.<br>";
+        isValid = false;
+      }
+      if (phone.trim() === "") {
+        errorMessagephone += "Phone is required.<br>";
+        isValid = false;
+      }
+      if (email.trim() === "") {
+        errorMessageemail += "Email is required.<br>";
+        isValid = false;
+      }
+      if (password.trim() === "") {
+        errorMessagepassword += "password is required.<br>";
+        isValid = false;
+      }
+      if (confirmPassword.trim() === "") {
+        errorMessagerepassword += "re-type Password is required.<br>";
+        isValid = false;
+      }
+
+      document.getElementById("errorMessagefirst").innerHTML = errorMessagefirst;
+      document.getElementById("errorMessagelast").innerHTML = errorMessagelast;
+      document.getElementById("errorMessagecourse").innerHTML = errorMessagecourse;
+      document.getElementById("errorMessagegender").innerHTML = errorMessagegender;
+      document.getElementById("errorMessagephone").innerHTML = errorMessagephone;
+      document.getElementById("errorMessageemail").innerHTML = errorMessageemail;
+      document.getElementById("errorMessagepassword").innerHTML = errorMessagepassword;
+      document.getElementById("errorMessagerepassword").innerHTML = errorMessagerepassword;
+      document.getElementById("passwordnotmatched").innerHTML = passwordnotmatched;
+
+      return isValid;
+    };
+
+    document.addEventListener("click", (event) => {
+      if (event.target.classList.contains("editUser")) {
+        const userId = parseInt(event.target.getAttribute("data-userid"));
+        const user = users.find((user) => user.id === userId);
+        document.getElementById("fname").value = user.fname;
+        document.getElementById("lname").value = user.lname;
+        document.getElementById("course").value = user.course;
+        document.getElementById("gender").value = user.gender;
+        document.getElementById("phone").value = user.phone;
+        document.getElementById("email").value = user.email;
+        document.getElementById("registerButton").style.display = "none";
+        document.getElementById("saveChangesButton").style.display = "block";
+        // made changes here
+        if (document.getElementById("registerButton").style.display === "none") {
+          document.getElementById("resetButton").style.display = "none";
+          document.getElementById("clearButton").style.display = "block";
+        }
+        document
+          .getElementById("saveChangesButton")
+          .setAttribute("data-userid", userId);
+      }
+
+    });
+
+    document
+      .getElementById("saveChangesButton")
+      .addEventListener("click", () => {
+        const userId = parseInt(
+          document
+            .getElementById("saveChangesButton")
+            .getAttribute("data-userid")
+        );
+        const editedUser = users.find((user) => user.id === userId);
+        editedUser.fname = document.getElementById("fname").value;
+        editedUser.lname = document.getElementById("lname").value;
+        editedUser.course = document.getElementById("course").value;
+        editedUser.gender = document.getElementById("gender").value;
+        editedUser.phone = document.getElementById("phone").value;
+        editedUser.email = document.getElementById("email").value;
+        if (validateForm()) {
+          document.getElementById(`user-${userId}`).innerHTML = `
+          <td>${userId}</td>
+          <td>${editedUser.fname}</td>
+          <td>${editedUser.lname}</td>
+          <td>${editedUser.course}</td>
+          <td>${editedUser.gender}</td>
+          <td>${editedUser.phone}</td>
+          <td>${editedUser.email}</td>
+          <td>
+            <button class="btn btn-sm btn-primary editUser" data-userid="${userId}">Edit</button>
+            <button class="btn btn-sm btn-danger deleteUser" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-userid="${userId}">Delete</button>
+          </td>
+        `;
+          document.getElementById("registerButton").style.display = "block";
+          document.getElementById("saveChangesButton").style.display = "none";
+          document.getElementById("resetButton").style.display = "block";
+          document.getElementById("clearButton").style.display = "none";
+          document.getElementById("registrationForm").reset();
+        }
+      });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.classList.contains("deleteUser")) {
+        const userId = parseInt(event.target.getAttribute("data-userid"));
+        document
+          .getElementById("confirmDeleteUser")
+          .setAttribute("data-userid", userId);
+      }
+    });
+
+    document
+      .getElementById("confirmDeleteUser")
+      .addEventListener("click", () => {
+        const userId = parseInt(
+          document
+            .getElementById("confirmDeleteUser")
+            .getAttribute("data-userid")
+        );
+        // $("#deleteUserModal").modal("hide");
+        const userIndex = users.findIndex((user) => user.id === userId);
+        if (userIndex !== -1) {
+          users.splice(userIndex, 1);
+          document.getElementById(`user-${userId}`).remove();
+        }
+      });
+  </script>
+
+</body>
+
+</html>
